@@ -6,5 +6,5 @@ export class CategoryController {
   constructor(
     private readonly categoryService: CategoryService
   ) {}
-
+    
 }

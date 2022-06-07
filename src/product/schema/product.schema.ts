@@ -6,7 +6,7 @@ export type ProductDocument = Product & Document;
 @Schema()
 export class Product {
   @Prop()
-  id: string;
+  id?: string;
   @Prop()
   categoryId: string;
   @Prop()
@@ -14,13 +14,15 @@ export class Product {
   @Prop()
   thumbnail: string;
   @Prop()
-  price: number;
+  newPrice: number;
+  @Prop()
+  oldPrice?: number;
   @Prop()
   decription: string;
   @Prop()
   isStock: boolean;
   @Prop()
-  discount: string;
+  priority: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
