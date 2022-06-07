@@ -10,4 +10,4 @@ import { Category, CategorySchema } from "./schema/category.schema";
   providers: [CategoryService],
 })
 
-export class UserModule {}
+export class CategoryModule {};
