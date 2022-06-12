@@ -6,7 +6,7 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [ CategoryModule, ProductModule, MongooseModule.forRoot('mongodb://localhost:27017/my-project')],
+  imports: [ CategoryModule, ProductModule, MongooseModule.forRoot('mongodb://localhost:27017/food-and-drink')],
   controllers: [AppController],
   providers: [AppService],
 })
