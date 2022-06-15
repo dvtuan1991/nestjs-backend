@@ -14,7 +14,14 @@ export class CategoryService {
   }
 
   async createCategory(data: Category) {
-    const createData = new this.categoryModel({ ...data, id: uuidv4() });
+    let id: number;
+    const maxValue = await this.categoryModel.find({}).sort({id: -1}).limit(1);
+    if (maxValue.length > 0) {
+      id = maxValue[0].id + 1;
+    } else {
+      id = 0
+    };
+    const createData = new this.categoryModel({ ...data, id: id });
     return createData.save();
   };
 
