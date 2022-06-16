@@ -9,6 +9,8 @@ export class Category {
   id?: number;
   @Prop()
   name: string;
+  @Prop()
+  ordinalNum?: number;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);

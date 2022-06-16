@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { Category } from "./schema/category.schema";
 
@@ -14,6 +14,14 @@ export class CategoryController {
   @Post()
   async createCategory(@Body() data: Category) {
     return await this.categoryService.createCategory(data);
+  }
+
+  @Get('/table')
+  async getListCategoryTable (
+    @Query('pageIndex') pageIndex: number,
+    @Query('pageSize') pageSize: number
+  ) {
+    return this.categoryService.getCategoryTable(pageIndex, pageSize)
   }
 
   @Get('/:categoryId')

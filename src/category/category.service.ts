@@ -13,9 +13,34 @@ export class CategoryService {
     return this.categoryModel.find().exec();
   }
 
+  async getCategoryTable(pageIndex?: number, pageSize?: number) {
+    let listCategory: Category[];
+    let startIndex = 0;
+    const allCategory = await this.categoryModel.find().exec();
+    const totalCategory = allCategory.length;
+    if (pageIndex && pageSize) {
+      let startIndex = (pageIndex - 1) * pageSize;
+      let endIndex = pageIndex * pageSize;
+      if (startIndex >= totalCategory) {
+        startIndex = (Math.floor(totalCategory / startIndex) - 1) * pageSize;
+        endIndex = Math.floor(totalCategory / startIndex) * pageSize
+      }
+      listCategory = allCategory.slice(startIndex, endIndex);
+    };
+    if (!pageIndex || !pageSize) {
+      listCategory = allCategory;
+    };
+    for (let i = 0; i < listCategory.length; i++) {
+      listCategory[i].ordinalNum = startIndex +1
+      startIndex++
+    }
+    return {listCategory, totalCategory}
+  }
+
+
   async createCategory(data: Category) {
     let id: number;
-    const maxValue = await this.categoryModel.find({}).sort({id: -1}).limit(1);
+    const maxValue = await this.categoryModel.find({}).sort({ id: -1 }).limit(1);
     if (maxValue.length > 0) {
       id = maxValue[0].id + 1;
     } else {

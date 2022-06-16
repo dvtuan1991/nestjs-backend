@@ -23,6 +23,8 @@ export class Product {
   isStock: boolean;
   @Prop()
   priority: number;
+  @Prop()
+  ordinalNum?: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

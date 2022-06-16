@@ -10,7 +10,7 @@ export class ProductService {
   ) { }
 
   async create(data: Product) {
-    let id;
+    let id: number;
     const maxValue = await this.productModel.find({}).sort({ id: -1 }).limit(1);
     if (maxValue.length > 0) {
       id = maxValue[0].id + 1;
@@ -30,19 +30,27 @@ export class ProductService {
   };
 
   async getProductTable(pageIndex?: number, pageSize?: number) {
+    let listProduct: Product[];
+    let startIndex = 0;
     const allProduct = await this.productModel.find().exec();
-    const leng = allProduct.length;
+    const totalProduct = allProduct.length;
     if (pageIndex && pageSize) {
-      let startIndex = (pageIndex - 1) * pageSize;
+      startIndex = (pageIndex - 1) * pageSize;
       let endIndex = pageIndex * pageSize;
-      if (startIndex >= leng) {
-        startIndex = (Math.floor(leng / startIndex) - 1) * pageSize;
-        endIndex = Math.floor(leng / startIndex) * pageSize
+      if (startIndex >= totalProduct) {
+        startIndex = (Math.floor(totalProduct / startIndex) - 1) * pageSize;
+        endIndex = Math.floor(totalProduct / startIndex) * pageSize
       }
-      return { listProduct: allProduct.slice(startIndex, endIndex), totalProduct: leng }
-    } else {
-      return allProduct
+      listProduct = allProduct.slice(startIndex, endIndex)
+    };
+    if (!pageIndex || !pageSize) {
+      listProduct = allProduct
+    };
+    for (let i = 0; i < listProduct.length; i++) {
+      listProduct[i].ordinalNum = startIndex + 1
+      startIndex++
     }
+    return { listProduct, totalProduct }
   }
 
   async getListProductSale() {
