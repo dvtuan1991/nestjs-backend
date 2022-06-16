@@ -2,8 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Product, ProductDocument } from "./schema/product.schema";
-import { v4 as uuidv4 } from 'uuid';
-import e from "express";
 
 @Injectable()
 export class ProductService {
@@ -23,13 +21,29 @@ export class ProductService {
     return createData.save();
   }
 
-  async findAndUpdate (id: number, data: Product) {
-    return await this.productModel.findOneAndUpdate({id: id}, data).exec();
+  async findAndUpdate(id: number, data: Product) {
+    return await this.productModel.findOneAndUpdate({ id: id }, data).exec();
   }
 
-  async getAllProduct(): Promise<Product[]> {
-    return this.productModel.find().exec();
+  async getAllProduct(pageIndex?: number, pageSize?: number): Promise<Product[]> {
+    return await this.productModel.find().exec();
   };
+
+  async getProductTable(pageIndex?: number, pageSize?: number) {
+    const allProduct = await this.productModel.find().exec();
+    const leng = allProduct.length;
+    if (pageIndex && pageSize) {
+      let startIndex = (pageIndex - 1) * pageSize;
+      let endIndex = pageIndex * pageSize;
+      if (startIndex >= leng) {
+        startIndex = (Math.floor(leng / startIndex) - 1) * pageSize;
+        endIndex = Math.floor(leng / startIndex) * pageSize
+      }
+      return { listProduct: allProduct.slice(startIndex, endIndex), totalProduct: leng }
+    } else {
+      return allProduct
+    }
+  }
 
   async getListProductSale() {
     const allProduct = await this.getAllProduct();
@@ -44,6 +58,14 @@ export class ProductService {
       throw new NotFoundException();
     } else {
       return product
+    }
+  };
+
+  async findAndDelte(id: number) {
+    try {
+      return await this.productModel.findOneAndDelete({ id: id }).exec();
+    } catch (error) {
+      throw error
     }
   }
 }

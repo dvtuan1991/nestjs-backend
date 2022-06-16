@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, NotImplementedException, UseInterceptors, UploadedFile, Put } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, NotImplementedException, UseInterceptors, UploadedFile, Put, Query, Delete } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { Product } from "./schema/product.schema";
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -16,7 +16,6 @@ export class ProductController {
   async getAllProduct(): Promise<Product[]> {
     return this.productService.getAllProduct();
   };
-
 
   @Post()
   @UseInterceptors(FileInterceptor('file', {
@@ -41,6 +40,14 @@ export class ProductController {
     }
   }
 
+  @Get('table')
+  async getListProductTable(
+    @Query('pageIndex') pageIndex?: string,
+    @Query('pageSize') pageSize?: string
+  ) {
+    return this.productService.getProductTable(Number(pageIndex), Number(pageSize));
+  }
+
   @Put('/:productId')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -60,7 +67,7 @@ export class ProductController {
     data.categoryId = Number(data.categoryId);
     data.oldPrice && (data.oldPrice = Number(data.oldPrice));
     if (file && file.path) {
-      return this.productService.findAndUpdate(Number(productId), {...data, thumbnail: `/${basename(file.path)}`})
+      return this.productService.findAndUpdate(Number(productId), { ...data, thumbnail: `/${basename(file.path)}` })
     } else {
       return this.productService.findAndUpdate(Number(productId), data)
     }
@@ -80,6 +87,11 @@ export class ProductController {
     } else {
       throw new NotImplementedException()
     }
+  }
+
+  @Delete('/:productId/delete')
+  async deleteProduct (@Param('productId') productId: string) {
+    return this.productService.findAndDelte(Number(productId))
   }
 
 }

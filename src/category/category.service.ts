@@ -25,7 +25,7 @@ export class CategoryService {
     return createData.save();
   };
 
-  async findCategoryByProductId(productId: string): Promise<Category> {
-    return this.categoryModel.findOne({ id: productId }).exec();
+  async findCategory(categoryId: number): Promise<Category> {
+    return this.categoryModel.findOne({ id: categoryId }).exec();
   };
 }

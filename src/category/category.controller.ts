@@ -15,4 +15,9 @@ export class CategoryController {
   async createCategory(@Body() data: Category) {
     return await this.categoryService.createCategory(data);
   }
+
+  @Get('/:categoryId')
+  async getCategory (@Param('categoryId') categoryId: string) {
+    return await this.categoryService.findCategory(Number(categoryId))
+  }
 }
