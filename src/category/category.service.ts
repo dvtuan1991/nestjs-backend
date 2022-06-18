@@ -19,7 +19,7 @@ export class CategoryService {
     const allCategory = await this.categoryModel.find().exec();
     const totalCategory = allCategory.length;
     if (pageIndex && pageSize) {
-      let startIndex = (pageIndex - 1) * pageSize;
+      startIndex = (pageIndex - 1) * pageSize;
       let endIndex = pageIndex * pageSize;
       if (startIndex >= totalCategory) {
         startIndex = (Math.floor(totalCategory / startIndex) - 1) * pageSize;
@@ -31,10 +31,10 @@ export class CategoryService {
       listCategory = allCategory;
     };
     for (let i = 0; i < listCategory.length; i++) {
-      listCategory[i].ordinalNum = startIndex +1
+      listCategory[i].ordinalNum = startIndex + 1
       startIndex++
     }
-    return {listCategory, totalCategory}
+    return { listCategory, totalCategory }
   }
 
 
@@ -53,4 +53,12 @@ export class CategoryService {
   async findCategory(categoryId: number): Promise<Category> {
     return this.categoryModel.findOne({ id: categoryId }).exec();
   };
+
+  async findAndDelte(id: number) {
+    try {
+      return await this.categoryModel.findOneAndDelete({ id: id }).exec();
+    } catch (error) {
+      throw error
+    }
+  }
 }
