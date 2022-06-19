@@ -54,7 +54,11 @@ export class CategoryService {
     return this.categoryModel.findOne({ id: categoryId }).exec();
   };
 
-  async findAndDelte(id: number) {
+  async findAndUpdate(id: number, data: Category) {
+    return await this.categoryModel.findOneAndUpdate({ id }, data).exec()
+  }
+
+  async findAndDelete(id: number) {
     try {
       return await this.categoryModel.findOneAndDelete({ id: id }).exec();
     } catch (error) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { CategoryService } from "./category.service";
 import { Category } from "./schema/category.schema";
 
@@ -28,8 +28,17 @@ export class CategoryController {
   async getCategory (@Param('categoryId') categoryId: string) {
     return await this.categoryService.findCategory(Number(categoryId))
   }
+
+  @Put('/:categoryId/update')
+  async updateCategory (
+    @Param('categoryId') categoryId: number,
+    @Body() data: Category
+  ) {
+    return await this.categoryService.findAndUpdate(Number(categoryId), data)
+  }
+
   @Delete('/:categoryId/delete')
   async deleteCategory (@Param('categoryId') categoryId: number) {
-    return this.categoryService.findAndDelte(Number(categoryId))
+    return this.categoryService.findAndDelete(Number(categoryId))
   }
 }
