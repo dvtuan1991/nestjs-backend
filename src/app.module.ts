@@ -8,8 +8,10 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { ServeStaticModule } from '@nestjs/serve-static/';
 import { UserModule } from './users/user.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
+    AuthModule,
     CategoryModule,
     ProductModule,
     UserModule,
