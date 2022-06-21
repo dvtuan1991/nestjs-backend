@@ -16,5 +16,9 @@ export class UserService {
   async findUser(userName: string) {
     console.log("find User")
     return this.userModel.findOne({ userName: userName }).exec();
+  };
+
+  async findUserById (id: string) {
+    return this.userModel.findOne({id: id}).exec()
   }
 }
