@@ -16,7 +16,7 @@ export class CategoryService {
   async getCategoryTable(pageIndex?: number, pageSize?: number) {
     let listCategory: Category[];
     let startIndex = 0;
-    const allCategory = await this.categoryModel.find().exec();
+    const allCategory = await this.getAllCategory();
     const totalCategory = allCategory.length;
     if (pageIndex && pageSize) {
       startIndex = (pageIndex - 1) * pageSize;

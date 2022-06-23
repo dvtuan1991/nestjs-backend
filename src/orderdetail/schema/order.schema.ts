@@ -19,6 +19,10 @@ export class Order {
   isSuccess?: boolean;
   @Prop()
   isCancel?: boolean;
+  @Prop()
+  orderListId?: string;
+  @Prop()
+  quantity?: number
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
