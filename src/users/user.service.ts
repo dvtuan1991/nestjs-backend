@@ -9,16 +9,30 @@ import { User, UserDocument } from './schema/user.schema';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
   async createUser(data: User): Promise<User> {
-    const createData = new this.userModel({ ...data, id: uuidv4() });
+    const maxValue = await this.userModel
+      .find({})
+      .sort({ id: -1 })
+      .limit(1)
+      .then((user) => user[0].id);
+    const minValue = await this.userModel
+      .find({})
+      .sort({ id: 1 })
+      .limit(1)
+      .then((user) => user[0].id);
+    if (!data.userName) {
+      const createGuest = new this.userModel({ id: minValue - 1 });
+      return createGuest.save();
+    }
+    const createData = new this.userModel({ ...data, id: maxValue + 1 });
     return createData.save();
   }
 
   async findUser(userName: string) {
-    console.log("find User")
+    console.log('find User');
     return this.userModel.findOne({ userName: userName }).exec();
-  };
+  }
 
-  async findUserById (id: string) {
-    return this.userModel.findOne({id: id}).exec()
+  async findUserById(id: string) {
+    return this.userModel.findOne({ id: id }).exec();
   }
 }

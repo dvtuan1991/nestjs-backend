@@ -3,11 +3,10 @@ import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
 
-
 @Schema()
 export class User {
   @Prop()
-  id: string;
+  id: number;
   @Prop()
   name: string;
   @Prop()
