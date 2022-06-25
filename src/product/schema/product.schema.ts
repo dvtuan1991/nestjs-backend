@@ -20,6 +20,8 @@ export class Product {
   @Prop()
   decription: string;
   @Prop()
+  createAt: number;
+  @Prop()
   isStock: boolean;
   @Prop()
   priority: number;

@@ -67,12 +67,35 @@ export class ProductController {
       Number(pageSize),
     );
   }
+  @Get('list')
+  async getProductAppList(
+    @Query('index') index: string,
+    @Query('limit') limit: string,
+    @Query('sort') sort: string,
+    @Query('min') min?: string,
+    @Query('max') max?: string,
+  ) {
+    if (min && max) {
+      return this.productService.filterProductHome(
+        Number(index),
+        Number(limit),
+        sort,
+        Number(min),
+        Number(max),
+      );
+    }
+    return this.productService.filterProductHome(
+      Number(index),
+      Number(limit),
+      sort,
+    );
+  }
 
   @Get('hot')
   async getHotProduct() {
     return this.productService.getHotProduct();
   }
-  
+
   @Put('/:productId')
   @UseInterceptors(
     FileInterceptor('file', {

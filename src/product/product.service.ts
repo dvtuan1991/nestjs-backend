@@ -18,7 +18,7 @@ export class ProductService {
     } else {
       id = 0;
     }
-    const createData = new this.productModel({ ...data, id: id });
+    const createData = new this.productModel({ ...data, id: id, createAt:  Date.now() });
     return createData.save();
   }
 
@@ -55,6 +55,42 @@ export class ProductService {
       startIndex++;
     }
     return { listProduct, totalProduct };
+  }
+
+  async filterProductHome(
+    pageIndex: number,
+    pageSize: number,
+    sortType: string,
+    min?: number,
+    max?: number,
+  ) {
+    let filterByPrice: Product[] = [];
+    let start = (pageIndex - 1) * pageSize;
+    let end = pageIndex * pageSize;
+    const allProduct = await this.getAllProduct();
+    if ((min === 1 || !min) && (!max || max === 100)) {
+      filterByPrice = allProduct;
+    }
+    if (min > 1 || max < 100) {
+      filterByPrice = allProduct.filter(
+        (item) => item.newPrice >= min && item.newPrice <= max,
+      );
+    }
+    switch (sortType) {
+      case 'ascent':
+        filterByPrice.sort((a, b) => a.newPrice - b.newPrice);
+        break;
+      case 'decent':
+        filterByPrice.sort((a, b) => b.newPrice - a.newPrice);
+      default:
+        break;
+    }
+    if (start >= filterByPrice.length) {
+      start = (Math.floor(filterByPrice.length / start) - 1) * pageSize;
+      end = Math.floor(filterByPrice.length / start) * pageSize;
+    }
+    const listProduct = filterByPrice.slice(start, end);
+    return { listProduct, total: filterByPrice.length };
   }
 
   async getHotProduct() {
