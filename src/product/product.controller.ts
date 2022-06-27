@@ -90,6 +90,10 @@ export class ProductController {
       sort,
     );
   }
+  @Get("category/:categoryId")
+  async getProductByCategoryId (@Param("categoryId") categoryId: string) {
+    return this.productService.getProductByCategoryId(Number(categoryId))
+  }
 
   @Get('hot')
   async getHotProduct() {

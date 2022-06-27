@@ -99,6 +99,10 @@ export class ProductService {
     return allProduct.slice(0, 4);
   }
 
+  async getProductByCategoryId (categoryId: number) {
+    return this.productModel.find({categoryId}).exec();
+  }
+
   async getListProductSale() {
     const allProduct = await this.getAllProduct();
     const listSale = allProduct.filter(
@@ -123,4 +127,5 @@ export class ProductService {
       throw error;
     }
   }
+
 }

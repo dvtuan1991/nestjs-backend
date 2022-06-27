@@ -7,15 +7,33 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
   @Post()
   async createOrder(@Body() data: Order) {
-    console.log('add');
-
-    return await this.orderService.createOrder(data);
+    const createData = await this.orderService.createOrder(data);
+    if (createData) {
+      return await this.orderService.getOrderByUserId(
+        Number(data.userId),
+        true,
+      );
+    }
   }
 
   @Put('/updateuserid')
   async updateUserIdInCart(@Body() data: { userId; guestId }) {
     return this.orderService.updateUserId(data);
   }
+
+  @Put('/:cartId/update')
+  async updateCart(@Param('cartId') cartId: string, @Body() data: Order) {
+    return this.orderService.findOneAndUpdate(cartId, data)
+  }
+
+  @Get('/test')
+  async testResut(
+    @Query('userId') userId: string,
+    @Query('productId') productId: string,
+  ) {
+    return this.orderService.finnd(Number(userId), Number(productId));
+  }
+
   @Get('/:userId')
   async getOrderByUserId(
     @Param('userId') userId: number,

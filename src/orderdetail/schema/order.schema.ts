@@ -14,6 +14,8 @@ export class Order {
   @Prop()
   isNew?: boolean;
   @Prop()
+  price: number
+  @Prop()
   isConfirm?: boolean;
   @Prop()
   isSuccess?: boolean;
