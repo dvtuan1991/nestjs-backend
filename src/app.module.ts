@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static/';
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './orderdetail/order.module';
+import { OrderListModule } from './order_list/order.list.module';
 @Module({
   imports: [
     AuthModule,
@@ -17,6 +18,7 @@ import { OrderModule } from './orderdetail/order.module';
     ProductModule,
     UserModule,
     OrderModule,
+    OrderListModule,
     MongooseModule.forRoot('mongodb://localhost:27017/food-and-drink'),
     MulterModule.register({
       dest: 'public/upload',
