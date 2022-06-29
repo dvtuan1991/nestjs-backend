@@ -34,6 +34,11 @@ export class OrderController {
     return this.orderService.finnd(Number(userId), Number(productId));
   }
 
+  @Get("/orderlist/:orderListId")
+  async getOrderByOrderListId (@Param("orderListId") orderListId: string ) {
+    return this.orderService.getOrderByOrderListId(orderListId)
+  }
+
   @Get('/:userId')
   async getOrderByUserId(
     @Param('userId') userId: number,

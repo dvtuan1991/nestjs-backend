@@ -14,12 +14,9 @@ export class OrderService {
     });
     if (findOrder) {
       let quantity = findOrder.quantity + 1;
-      let price  = quantity * data.price
+      let price = quantity * data.price;
       const result = await this.orderModel
-        .findOneAndUpdate(
-          { id: findOrder.id },
-          { quantity, price},
-        )
+        .findOneAndUpdate({ id: findOrder.id }, { quantity, price })
         .exec();
       // console.log(result);
       return result;
@@ -49,7 +46,11 @@ export class OrderService {
     return await this.orderModel.find({ userId, isNew: isCart });
   }
 
+  async getOrderByOrderListId(orderListId: string) {
+    return this.orderModel.find({ orderListId }).exec();
+  }
+
   async findOneAndUpdate(id: string, data: Order) {
-    return this.orderModel.findOneAndUpdate({ id }, {...data}).exec();
+    return this.orderModel.findOneAndUpdate({ id }, { ...data }).exec();
   }
 }

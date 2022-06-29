@@ -16,5 +16,9 @@ export class OrderListService {
       isComplete: false,
     });
     return createData.save();
+  };
+
+  async getOrderListByUserId (userId: number) {
+    return this.orderListModel.find({userId}).exec();
   }
 }
