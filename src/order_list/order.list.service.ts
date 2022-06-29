@@ -16,9 +16,15 @@ export class OrderListService {
       isComplete: false,
     });
     return createData.save();
-  };
+  }
 
-  async getOrderListByUserId (userId: number) {
-    return this.orderListModel.find({userId}).exec();
+  async getOrderListByUserId(userId: number) {
+    return this.orderListModel.find({ userId }).exec();
+  }
+
+  async updateOrder(id: string, data: OrderList) {
+    console.log(id);
+
+    return this.orderListModel.findOneAndUpdate({ id }, { ...data });
   }
 }

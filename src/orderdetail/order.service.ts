@@ -11,6 +11,7 @@ export class OrderService {
     const findOrder = await this.orderModel.findOne({
       userId: data.userId,
       productId: data.productId,
+      isNew: true
     });
     if (findOrder) {
       let quantity = findOrder.quantity + 1;

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { OrderListService } from './order.list.service';
 import { OrderList } from './schema/order.list';
 
@@ -14,5 +14,13 @@ export class OrderListController {
   @Get('/:userId')
   async getOrderListByUserId(@Param('userId') userId: string) {
     return this.orderService.getOrderListByUserId(Number(userId));
+  }
+
+  @Put('/:orderId/update')
+  async updateOrder(
+    @Param('orderId') orderId: string,
+    @Body() data: OrderList,
+  ) {
+    return this.orderService.updateOrder(orderId, data);
   }
 }
