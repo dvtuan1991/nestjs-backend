@@ -24,6 +24,8 @@ export class Order {
   @Prop()
   orderListId?: string;
   @Prop()
+  isReview: boolean;
+  @Prop()
   quantity?: number
 }
 

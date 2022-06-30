@@ -11,7 +11,7 @@ export class OrderService {
     const findOrder = await this.orderModel.findOne({
       userId: data.userId,
       productId: data.productId,
-      isNew: true
+      isNew: true,
     });
     if (findOrder) {
       let quantity = findOrder.quantity + 1;
@@ -38,6 +38,10 @@ export class OrderService {
 
   async updateUserId({ userId, guestId }) {
     return await this.orderModel.updateMany({ userId: guestId }, { userId });
+  }
+
+  async updateOrderStatus(orderListId: string, data: Order) {
+    return this.orderModel.updateMany({ orderListId }, { ...data });
   }
 
   async getOrderByUserId(userId: number, isCart: boolean = false) {

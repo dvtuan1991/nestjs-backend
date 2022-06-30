@@ -21,9 +21,17 @@ export class OrderController {
     return this.orderService.updateUserId(data);
   }
 
+  @Put('/:orderListId/byorderlist')
+  async updateCartByOrderList(
+    @Param('orderListId') orderListId: string,
+    @Body() data: Order,
+  ) {
+    return this.orderService.updateOrderStatus(orderListId, data);
+  }
+
   @Put('/:cartId/update')
   async updateCart(@Param('cartId') cartId: string, @Body() data: Order) {
-    return this.orderService.findOneAndUpdate(cartId, data)
+    return this.orderService.findOneAndUpdate(cartId, data);
   }
 
   @Get('/test')
@@ -34,9 +42,9 @@ export class OrderController {
     return this.orderService.finnd(Number(userId), Number(productId));
   }
 
-  @Get("/orderlist/:orderListId")
-  async getOrderByOrderListId (@Param("orderListId") orderListId: string ) {
-    return this.orderService.getOrderByOrderListId(orderListId)
+  @Get('/orderlist/:orderListId')
+  async getOrderByOrderListId(@Param('orderListId') orderListId: string) {
+    return this.orderService.getOrderByOrderListId(orderListId);
   }
 
   @Get('/:userId')

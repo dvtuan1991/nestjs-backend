@@ -23,8 +23,7 @@ export class OrderListService {
   }
 
   async updateOrder(id: string, data: OrderList) {
-    console.log(id);
-
+    console.log(data);
     return this.orderListModel.findOneAndUpdate({ id }, { ...data });
   }
 }
