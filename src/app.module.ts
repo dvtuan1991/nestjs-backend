@@ -11,6 +11,7 @@ import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 import { OrderModule } from './orderdetail/order.module';
 import { OrderListModule } from './order_list/order.list.module';
+import { CommentModule } from './comment/comment.module';
 @Module({
   imports: [
     AuthModule,
@@ -19,6 +20,7 @@ import { OrderListModule } from './order_list/order.list.module';
     UserModule,
     OrderModule,
     OrderListModule,
+    CommentModule,
     MongooseModule.forRoot('mongodb://localhost:27017/food-and-drink'),
     MulterModule.register({
       dest: 'public/upload',
