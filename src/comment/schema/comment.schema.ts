@@ -18,7 +18,11 @@ export class Comment {
   @Prop()
   isAnonymous: boolean;
   @Prop()
-  userName: string;
+  userName?: string;
+  @Prop()
+  userId?: number;
+  @Prop()
+  userAvatar?: string;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

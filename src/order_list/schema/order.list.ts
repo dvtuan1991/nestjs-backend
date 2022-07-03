@@ -20,6 +20,10 @@ export class OrderList {
   totalPrice: number;
   @Prop()
   createAt: number;
+  @Prop()
+  isCancel?: boolean;
+  @Prop()
+  ordinalNum?: number;
 }
 
 export const OrderListSchema = SchemaFactory.createForClass(OrderList);

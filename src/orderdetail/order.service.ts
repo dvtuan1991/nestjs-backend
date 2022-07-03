@@ -14,7 +14,7 @@ export class OrderService {
       isNew: true,
     });
     if (findOrder) {
-      let quantity = findOrder.quantity + 1;
+      let quantity = findOrder.quantity + data.quantity;
       let price = quantity * data.price;
       const result = await this.orderModel
         .findOneAndUpdate({ id: findOrder.id }, { quantity, price })
@@ -26,7 +26,6 @@ export class OrderService {
       const createData = new this.orderModel({
         ...data,
         id: uuidv4(),
-        quantity: 1,
       });
       return createData.save();
     }
