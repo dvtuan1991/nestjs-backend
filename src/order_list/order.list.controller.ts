@@ -13,6 +13,7 @@ export class OrderListController {
 
   @Put('/updateuserid')
   async updateUserIdInCart(@Body() data: { userId; guestId }) {
+    console.log(data);
     return this.orderService.updateUserId(data);
   }
 
