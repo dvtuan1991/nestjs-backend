@@ -18,7 +18,11 @@ export class ProductService {
     } else {
       id = 0;
     }
-    const createData = new this.productModel({ ...data, id: id, createAt:  Date.now() });
+    const createData = new this.productModel({
+      ...data,
+      id: id,
+      createAt: Date.now(),
+    });
     return createData.save();
   }
 
@@ -31,6 +35,22 @@ export class ProductService {
     pageSize?: number,
   ): Promise<Product[]> {
     return await this.productModel.find().exec();
+  }
+
+  filterListProduct(
+    listProduct: Product[],
+    min: number,
+    max: number,
+    categoryId: number,
+    productName: string
+  ) {
+    const filterByPrice = listProduct.filter(
+      (item) => item.newPrice >= min && item.newPrice <= max,
+    );
+    const filterByName = listProduct.filter((product) => product.name.includes(productName))
+    if (categoryId < 0) {
+      return filterByPrice;
+    }
   }
 
   async getProductTable(pageIndex?: number, pageSize?: number) {
@@ -99,8 +119,8 @@ export class ProductService {
     return allProduct.slice(0, 4);
   }
 
-  async getProductByCategoryId (categoryId: number) {
-    return this.productModel.find({categoryId}).exec();
+  async getProductByCategoryId(categoryId: number) {
+    return this.productModel.find({ categoryId }).exec();
   }
 
   async getListProductSale() {
@@ -127,5 +147,4 @@ export class ProductService {
       throw error;
     }
   }
-
 }

@@ -10,4 +10,9 @@ export class UserController {
   async createUser(@Body() data: User) {
     return this.userService.createUser(data);
   }
+
+  @Get('adminstatic')
+  async geTotalQuantity () {
+    return await this.userService.getTotalUser();
+  }
 }

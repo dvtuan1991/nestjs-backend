@@ -57,4 +57,22 @@ export class OrderService {
   async findOneAndUpdate(id: string, data: Order) {
     return this.orderModel.findOneAndUpdate({ id }, { ...data }).exec();
   }
+
+  async getAnalyticsData() {
+    const getTotalOrderComplete = await this.orderModel
+      .find({ isSuccess: true })
+      .exec();
+    const totalPrice = getTotalOrderComplete.reduce(
+      (total, order) => (total += order.price),
+      0,
+    );
+    return {
+      totalSold: getTotalOrderComplete.length,
+      totalPrice,
+    };
+  }
+
+  async deleteOrder(id: string) {
+    return this.orderModel.findOneAndDelete({ id }).exec();
+  }
 }

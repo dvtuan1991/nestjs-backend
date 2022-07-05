@@ -35,4 +35,9 @@ export class UserService {
   async findUserById(id: string) {
     return this.userModel.findOne({ id: id }).exec();
   }
+
+  async getTotalUser() {
+    const totalUser = await this.userModel.find({}).exec();
+    return totalUser.filter((user) => user.id > 0).length;
+  }
 }

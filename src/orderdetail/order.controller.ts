@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Delete,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Order } from './schema/order.schema';
 
@@ -34,6 +43,11 @@ export class OrderController {
     return this.orderService.findOneAndUpdate(cartId, data);
   }
 
+  @Get('adminanalytics')
+  async getAnalyticsData() {
+    return this.orderService.getAnalyticsData();
+  }
+
   @Get('/test')
   async testResut(
     @Query('userId') userId: string,
@@ -56,5 +70,10 @@ export class OrderController {
       return this.orderService.getOrderByUserId(Number(userId), true);
     }
     return this.orderService.getOrderByUserId(Number(userId));
+  }
+
+  @Delete('/:id/delete')
+  async deleteOrder(@Param('id') id: string) {
+    return await this.orderService.deleteOrder(id);
   }
 }

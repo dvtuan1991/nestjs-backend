@@ -61,6 +61,7 @@ export class OrderListService {
   sortOrder(orders: OrderList[], sortType: string) {
     switch (sortType.toLowerCase()) {
       case SortType.NEWEST:
+      case SortType.DEFAULT:
         orders.sort((a, b) => b.createAt - a.createAt);
         break;
       case SortType.OLDEST:
@@ -128,7 +129,14 @@ export class OrderListService {
   }
 
   async updateUserId({ userId, guestId }) {
-    return await this.orderListModel.updateMany({ userId: guestId }, { userId });
+    return await this.orderListModel.updateMany(
+      { userId: guestId },
+      { userId },
+    );
+  }
+
+  async deleteOrder(id: string) {
+    return this.orderListModel.findOneAndDelete({ id }).exec();
   }
 
   async updateOrder(id: string, data: OrderList) {

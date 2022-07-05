@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { OrderListService } from './order.list.service';
 import { OrderList } from './schema/order.list';
 
@@ -24,13 +33,23 @@ export class OrderListController {
     @Query('sort') sort: string,
     @Query('status') status: string,
   ) {
-    console.log(index);
     return this.orderService.getOrderList(
       Number(index),
       Number(limit),
       sort,
       status,
     );
+  }
+
+  @Get('/adminstatic')
+  async getTotalQuantity() {
+    const totalOrderList = await this.getListOrderTable(
+      '0',
+      '0',
+      'none',
+      'none',
+    );
+    return totalOrderList.listOrder.filter((item) => item.isCancel).length;
   }
 
   @Get('/:userId')
@@ -56,5 +75,10 @@ export class OrderListController {
     @Body() data: OrderList,
   ) {
     return this.orderService.updateOrder(orderId, data);
+  }
+
+  @Delete('/:id/delete')
+  async deleteOrder(@Param('id') id: string) {
+    return await this.orderService.deleteOrder(id);
   }
 }

@@ -74,6 +74,8 @@ export class ProductController {
     @Query('sort') sort: string,
     @Query('min') min?: string,
     @Query('max') max?: string,
+    @Query('name') name?: string,
+    @Query('categoryId') categoryId?: string,
   ) {
     if (min && max) {
       return this.productService.filterProductHome(
