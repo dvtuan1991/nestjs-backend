@@ -43,13 +43,7 @@ export class OrderListController {
 
   @Get('/adminstatic')
   async getTotalQuantity() {
-    const totalOrderList = await this.getListOrderTable(
-      '0',
-      '0',
-      'none',
-      'none',
-    );
-    return totalOrderList.listOrder.filter((item) => item.isCancel).length;
+    return (await this.orderService.getTotalOrderSale()).length;
   }
 
   @Get('/:userId')

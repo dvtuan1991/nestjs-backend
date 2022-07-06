@@ -42,15 +42,48 @@ export class ProductService {
     min: number,
     max: number,
     categoryId: number,
-    productName: string
+    productName: string,
   ) {
     const filterByPrice = listProduct.filter(
       (item) => item.newPrice >= min && item.newPrice <= max,
     );
-    const filterByName = listProduct.filter((product) => product.name.includes(productName))
+    const filterByName = filterByPrice.filter((product) =>
+      product.name.includes(productName),
+    );
     if (categoryId < 0) {
-      return filterByPrice;
+      return filterByName;
     }
+    return filterByName.filter((product) => product.categoryId === categoryId);
+  }
+
+  sortListProduct(listProduct: Product[], sortType: string) {
+    switch (sortType) {
+      case 'ascent':
+        listProduct.sort((a, b) => a.newPrice - b.newPrice);
+        break;
+      case 'decent':
+        listProduct.sort((a, b) => b.newPrice - a.newPrice);
+      default:
+        listProduct.sort((a, b) => b.id - a.id);
+        break;
+    }
+    return listProduct;
+  }
+
+  getListByLimit(listProduct: Product[], index: number, limit: number) {
+    const leng = listProduct.length;
+    let startIndex = (index - 1) * limit;
+    let endIndex = index * limit;
+    if (startIndex >= leng) {
+      startIndex = (Math.floor(leng / startIndex) - 1) * index;
+      endIndex = Math.floor(leng / startIndex) * index;
+    }
+    const result = listProduct.slice(startIndex, endIndex);
+    for (let i = 0; i < result.length; i++) {
+      result[i].ordinalNum = startIndex + 1;
+      startIndex++;
+    }
+    return result;
   }
 
   async getProductTable(pageIndex?: number, pageSize?: number) {
@@ -81,36 +114,28 @@ export class ProductService {
     pageIndex: number,
     pageSize: number,
     sortType: string,
-    min?: number,
-    max?: number,
+    min: number,
+    max: number,
+    categoryId: number,
+    productName: string,
   ) {
-    let filterByPrice: Product[] = [];
-    let start = (pageIndex - 1) * pageSize;
-    let end = pageIndex * pageSize;
     const allProduct = await this.getAllProduct();
-    if ((min === 1 || !min) && (!max || max === 100)) {
-      filterByPrice = allProduct;
+    const filter = this.filterListProduct(
+      allProduct,
+      min,
+      max,
+      categoryId,
+      productName,
+    );
+    if (filter.length === 0) {
+      return { listProduct: [], total: 0 };
     }
-    if (min > 1 || max < 100) {
-      filterByPrice = allProduct.filter(
-        (item) => item.newPrice >= min && item.newPrice <= max,
-      );
-    }
-    switch (sortType) {
-      case 'ascent':
-        filterByPrice.sort((a, b) => a.newPrice - b.newPrice);
-        break;
-      case 'decent':
-        filterByPrice.sort((a, b) => b.newPrice - a.newPrice);
-      default:
-        break;
-    }
-    if (start >= filterByPrice.length) {
-      start = (Math.floor(filterByPrice.length / start) - 1) * pageSize;
-      end = Math.floor(filterByPrice.length / start) * pageSize;
-    }
-    const listProduct = filterByPrice.slice(start, end);
-    return { listProduct, total: filterByPrice.length };
+    const sort = this.sortListProduct(filter, sortType);
+    const listByLimit = this.getListByLimit(sort, pageIndex, pageSize);
+    return {
+      listProduct: listByLimit,
+      total: sort.length,
+    };
   }
 
   async getHotProduct() {

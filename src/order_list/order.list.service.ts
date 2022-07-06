@@ -128,6 +128,11 @@ export class OrderListService {
     };
   }
 
+  async getTotalOrderSale() {
+    const allProduct = await this.getAllOrder();
+    return allProduct.filter((order) => !order.isCancel);
+  }
+
   async updateUserId({ userId, guestId }) {
     return await this.orderListModel.updateMany(
       { userId: guestId },

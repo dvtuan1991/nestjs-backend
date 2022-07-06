@@ -77,24 +77,19 @@ export class ProductController {
     @Query('name') name?: string,
     @Query('categoryId') categoryId?: string,
   ) {
-    if (min && max) {
-      return this.productService.filterProductHome(
-        Number(index),
-        Number(limit),
-        sort,
-        Number(min),
-        Number(max),
-      );
-    }
     return this.productService.filterProductHome(
       Number(index),
       Number(limit),
       sort,
+      Number(min),
+      Number(max),
+      Number(categoryId),
+      name,
     );
   }
-  @Get("category/:categoryId")
-  async getProductByCategoryId (@Param("categoryId") categoryId: string) {
-    return this.productService.getProductByCategoryId(Number(categoryId))
+  @Get('category/:categoryId')
+  async getProductByCategoryId(@Param('categoryId') categoryId: string) {
+    return this.productService.getProductByCategoryId(Number(categoryId));
   }
 
   @Get('hot')

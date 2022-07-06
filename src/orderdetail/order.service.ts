@@ -66,8 +66,12 @@ export class OrderService {
       (total, order) => (total += order.price),
       0,
     );
+    const totalSold = getTotalOrderComplete.reduce(
+      (total, order) => (total += order.quantity),
+      0,
+    );
     return {
-      totalSold: getTotalOrderComplete.length,
+      totalSold: totalSold,
       totalPrice,
     };
   }
