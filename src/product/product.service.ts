@@ -48,7 +48,7 @@ export class ProductService {
       (item) => item.newPrice >= min && item.newPrice <= max,
     );
     const filterByName = filterByPrice.filter((product) =>
-      product.name.includes(productName),
+      product.name.toLowerCase().includes(productName.toLowerCase()),
     );
     if (categoryId < 0) {
       return filterByName;
