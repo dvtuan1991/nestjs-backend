@@ -57,12 +57,14 @@ export class ProductService {
   }
 
   sortListProduct(listProduct: Product[], sortType: string) {
+    console.log(sortType)
     switch (sortType) {
       case 'ascent':
         listProduct.sort((a, b) => a.newPrice - b.newPrice);
         break;
       case 'decent':
         listProduct.sort((a, b) => b.newPrice - a.newPrice);
+        break;
       default:
         listProduct.sort((a, b) => b.id - a.id);
         break;
