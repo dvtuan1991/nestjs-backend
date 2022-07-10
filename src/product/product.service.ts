@@ -37,27 +37,52 @@ export class ProductService {
     return await this.productModel.find().exec();
   }
 
-  filterListProduct(
-    listProduct: Product[],
+  async filterListProduct(
     min: number,
     max: number,
     categoryId: number,
     productName: string,
   ) {
-    const filterByPrice = listProduct.filter(
-      (item) => item.newPrice >= min && item.newPrice <= max,
-    );
-    const filterByName = filterByPrice.filter((product) =>
-      product.name.toLowerCase().includes(productName.toLowerCase()),
-    );
-    if (categoryId < 0) {
-      return filterByName;
+    let model = this.productModel;
+    const queryObj: any = {};
+    if (min && max) {
+      queryObj.oldPrice = { $gte: min, $lte: max };
     }
-    return filterByName.filter((product) => product.categoryId === categoryId);
+
+    if (Number(categoryId) >= 0) {
+      queryObj.categoryId = Number(categoryId);
+    }
+    if (productName) {
+      queryObj.name = new RegExp(productName, "i");
+    }
+    console.log(queryObj);
+    let query = this.productModel.find(queryObj);
+    if (Number(categoryId) === -2) {
+      query = query.$where('this.oldPrice > this.newPrice');
+    }
+
+    const result = await query.exec();
+    return result;
+    // const filterByPrice =
+    //   min && max
+    //     ? listProduct.filter(
+    //         (item) => item.newPrice >= min && item.newPrice <= max,
+    //       )
+    //     : listProduct;
+    // const filterByName = productName
+    //   ? filterByPrice.filter((product) =>
+    //       product.name.toLowerCase().includes(productName.toLowerCase()),
+    //     )
+    //   : filterByPrice;
+    // if (categoryId) {
+    //   return filterByName.filter(
+    //     (product) => product.categoryId === categoryId,
+    //   );
+    // }
+    // return filterByName;
   }
 
   sortListProduct(listProduct: Product[], sortType: string) {
-    console.log(sortType)
     switch (sortType) {
       case 'ascent':
         listProduct.sort((a, b) => a.newPrice - b.newPrice);
@@ -80,6 +105,7 @@ export class ProductService {
       startIndex = (Math.floor(leng / startIndex) - 1) * index;
       endIndex = Math.floor(leng / startIndex) * index;
     }
+    console.log(startIndex, endIndex);
     const result = listProduct.slice(startIndex, endIndex);
     for (let i = 0; i < result.length; i++) {
       result[i].ordinalNum = startIndex + 1;
@@ -113,17 +139,15 @@ export class ProductService {
   }
 
   async filterProductHome(
-    pageIndex: number,
+    pageIndex: number = 1,
     pageSize: number,
     sortType: string,
-    min: number,
-    max: number,
+    min: number = 1,
+    max: number = 100,
     categoryId: number,
     productName: string,
   ) {
-    const allProduct = await this.getAllProduct();
-    const filter = this.filterListProduct(
-      allProduct,
+    const filter = await this.filterListProduct(
       min,
       max,
       categoryId,

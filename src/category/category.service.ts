@@ -17,6 +17,7 @@ export class CategoryService {
     let listCategory: Category[];
     let startIndex = 0;
     const allCategory = await this.getAllCategory();
+    allCategory.sort((a,b) => b.id - a.id);
     const totalCategory = allCategory.length;
     if (pageIndex && pageSize) {
       startIndex = (pageIndex - 1) * pageSize;

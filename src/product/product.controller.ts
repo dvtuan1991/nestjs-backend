@@ -69,7 +69,7 @@ export class ProductController {
   }
   @Get('list')
   async getProductAppList(
-    @Query('index') index: string,
+    @Query('index') index: number,
     @Query('limit') limit: string,
     @Query('sort') sort: string,
     @Query('min') min?: string,
@@ -78,7 +78,7 @@ export class ProductController {
     @Query('categoryId') categoryId?: string,
   ) {
     return this.productService.filterProductHome(
-      Number(index),
+      index,
       Number(limit),
       sort,
       Number(min),
