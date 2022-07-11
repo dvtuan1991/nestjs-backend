@@ -63,23 +63,7 @@ export class ProductService {
 
     const result = await query.exec();
     return result;
-    // const filterByPrice =
-    //   min && max
-    //     ? listProduct.filter(
-    //         (item) => item.newPrice >= min && item.newPrice <= max,
-    //       )
-    //     : listProduct;
-    // const filterByName = productName
-    //   ? filterByPrice.filter((product) =>
-    //       product.name.toLowerCase().includes(productName.toLowerCase()),
-    //     )
-    //   : filterByPrice;
-    // if (categoryId) {
-    //   return filterByName.filter(
-    //     (product) => product.categoryId === categoryId,
-    //   );
-    // }
-    // return filterByName;
+
   }
 
   sortListProduct(listProduct: Product[], sortType: string) {
@@ -166,7 +150,7 @@ export class ProductService {
 
   async getHotProduct() {
     const allProduct = await this.getAllProduct();
-    allProduct.sort((a, b) => b.priority - a.priority);
+    allProduct.sort((a, b) => b.id - a.id);
     return allProduct.slice(0, 4);
   }
 

@@ -24,8 +24,6 @@ export class Product {
   @Prop()
   isStock: boolean;
   @Prop()
-  priority: number;
-  @Prop()
   ordinalNum?: number;
 }
 

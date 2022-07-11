@@ -46,7 +46,6 @@ export class ProductController {
     console.log(1);
     if (file && file.path) {
       data.newPrice = Number(data.newPrice);
-      data.priority = Number(data.priority);
       data.categoryId = Number(data.categoryId);
       data.oldPrice && (data.oldPrice = Number(data.oldPrice));
       console.log('file');
