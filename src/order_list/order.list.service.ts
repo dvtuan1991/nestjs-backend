@@ -46,7 +46,7 @@ export class OrderListService {
         result = orders.filter((order) => order.isComplete);
         break;
       case FilterType.SHIPPING:
-        result = orders.filter((order) => !order.isComplete);
+        result = orders.filter((order) => !order.isComplete && !order.isCancel);
         break;
 
       default:
