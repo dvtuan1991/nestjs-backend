@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { OrderService } from 'src/orderdetail/order.service';
 import { Product, ProductDocument } from './schema/product.schema';
 
 @Injectable()
@@ -8,6 +9,7 @@ export class ProductService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
+    private readonly orderService: OrderService
   ) {}
 
   async create(data: Product) {
