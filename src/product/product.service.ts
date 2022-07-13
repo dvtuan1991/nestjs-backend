@@ -9,7 +9,7 @@ export class ProductService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
-    private readonly orderService: OrderService
+    private readonly orderService: OrderService,
   ) {}
 
   async create(data: Product) {
@@ -55,17 +55,17 @@ export class ProductService {
       queryObj.categoryId = Number(categoryId);
     }
     if (productName) {
-      queryObj.name = new RegExp(productName, "i");
+      queryObj.name = { $regex: new RegExp(productName, 'i') };
     }
-    console.log(queryObj);
+
     let query = this.productModel.find(queryObj);
     if (Number(categoryId) === -2) {
       query = query.$where('this.oldPrice > this.newPrice');
     }
 
     const result = await query.exec();
-    return result;
 
+    return result;
   }
 
   sortListProduct(listProduct: Product[], sortType: string) {
@@ -91,7 +91,6 @@ export class ProductService {
       startIndex = (Math.floor(leng / startIndex) - 1) * index;
       endIndex = Math.floor(leng / startIndex) * index;
     }
-    console.log(startIndex, endIndex);
     const result = listProduct.slice(startIndex, endIndex);
     for (let i = 0; i < result.length; i++) {
       result[i].ordinalNum = startIndex + 1;

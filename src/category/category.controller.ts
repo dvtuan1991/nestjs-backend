@@ -39,6 +39,7 @@ export class CategoryController {
 
   @Delete('/:categoryId/delete')
   async deleteCategory (@Param('categoryId') categoryId: number) {
+    console.log(categoryId);
     return this.categoryService.findAndDelete(Number(categoryId))
   }
 }

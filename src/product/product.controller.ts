@@ -76,6 +76,7 @@ export class ProductController {
     @Query('name') name?: string,
     @Query('categoryId') categoryId?: string,
   ) {
+    console.log(name);
     return this.productService.filterProductHome(
       index,
       Number(limit),

@@ -38,30 +38,34 @@ export class OrderListService {
 
   filterOrderByStatus(orders: OrderList[], status: string) {
     let result = [];
-    switch (status.toLowerCase()) {
-      case FilterType.CANCEL:
-        result = orders.filter((order) => order.isCancel);
-        break;
-      case FilterType.COMPLETE:
-        result = orders.filter((order) => order.isComplete);
-        break;
-      case FilterType.SHIPPING:
-        result = orders.filter((order) => !order.isComplete && !order.isCancel);
-        break;
+    if (status) {
+      switch (status.toLowerCase()) {
+        case FilterType.CANCEL:
+          result = orders.filter((order) => order.isCancel);
+          break;
+        case FilterType.COMPLETE:
+          result = orders.filter((order) => order.isComplete);
+          break;
+        case FilterType.SHIPPING:
+          result = orders.filter(
+            (order) => !order.isComplete && !order.isCancel,
+          );
+          break;
 
-      default:
-        result = orders
-          .filter((order) => !order.isComplete)
-          .concat(orders.filter((order) => order.isComplete));
-        break;
+        default:
+          result = orders
+            .filter((order) => !order.isComplete)
+            .concat(orders.filter((order) => order.isComplete));
+          break;
+      }
+      return result;
     }
-    return result;
+    return orders;
   }
 
-  sortOrder(orders: OrderList[], sortType: string) {
+  sortOrder(orders: OrderList[], sortType: string = SortType.DEFAULT) {
     switch (sortType.toLowerCase()) {
       case SortType.NEWEST:
-      case SortType.DEFAULT:
         orders.sort((a, b) => b.createAt - a.createAt);
         break;
       case SortType.OLDEST:
@@ -73,6 +77,16 @@ export class OrderListService {
       case SortType.DECENT:
         orders.sort((a, b) => b.totalPrice - a.totalPrice);
         break;
+      case SortType.DEFAULT:
+        const orderShipping = orders.filter(
+          (order) => !order.isComplete && !order.isCancel,
+        );
+        orderShipping.sort((a, b) => b.createAt - a.createAt);
+        return orderShipping.concat(
+          orders
+            .filter((order) => order.isComplete || order.isCancel)
+            .sort((a, b) => b.createAt - a.createAt),
+        );
       default:
         break;
     }

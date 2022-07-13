@@ -30,8 +30,8 @@ export class OrderListController {
   async getListOrderTable(
     @Query('index') index: string,
     @Query('limit') limit: string,
-    @Query('sort') sort: string,
-    @Query('status') status: string,
+    @Query('sort') sort?: string,
+    @Query('status') status?: string,
   ) {
     return this.orderService.getOrderList(
       Number(index),
